@@ -12,7 +12,9 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
         std::string coordinates;
         int y, x;
 
-        draw_boards(attack_board, board);
+        draw_boards(attack_board, board, false, true);
+
+        // Здесь появится возможность посмотреть свою доску
 
         std::cout << "Enter the coordinates you want to strike in the format \"letternumber\"\n\n";
 

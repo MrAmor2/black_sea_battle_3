@@ -153,13 +153,13 @@ int main() {
 
     std::cout << player_2_name << " , step away from the screen\n\n";
     std::cout << player_1_name << " , your location of the ships:\n\n";
-    draw_boards(attack_board_player_1, board_player_1);
+    draw_boards(attack_board_player_1, board_player_1, true, false);
 
     // system("cls");
 
     std::cout << player_1_name << " , step away from the screen\n\n";
     std::cout << player_2_name << " , your location of the ships:\n\n";
-    draw_boards(attack_board_player_2, board_player_2);
+    draw_boards(attack_board_player_2, board_player_2, true, false);
 
     // system("cls");
 
