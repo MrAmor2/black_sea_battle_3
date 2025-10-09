@@ -1,4 +1,5 @@
 #include <iostream>
+#include <windows.h>
 
 #include "include\get_coordinates.hpp"
 #include "include\make_board.hpp"
@@ -7,25 +8,29 @@
 #include "include\check_board.hpp"
 #include "include\make_move.hpp"
 
-std::string player_1_name, player_2_name;
-
 int main() {
 
-    // std::ios_base::sync_with_stdio(0);
-    // std::cin.tie(0);
-    // std::cout.tie(0);
+    SetConsoleOutputCP(CP_UTF8);
+
+    system("cls");
+
+    std::string player_1_name, player_2_name;
 
     std::cout << "Player #1, enter your name" << "\n\n";
-    std::cin >> player_1_name;
+    getline(std::cin, player_1_name);
     std::cout << '\n';
 
-    // system("cls");
+    Sleep(2000);
+
+    system("cls");
 
     std::cout << "Player #2, enter your name" << "\n\n";
-    std::cin >> player_2_name;
+    getline(std::cin, player_2_name);
     std::cout << '\n';
 
-    // system("cls");
+    Sleep(2000);
+
+    system("cls");
     
     // Здесь могут быть правила
 
@@ -85,11 +90,13 @@ int main() {
         std::cout << player_1_name << ", arrange your ships on the game board by specifying the coordinates of the extreme decks ";
         std::cout << "in the format \"letternumber letternumber\"\n\n";
 
-        // system("cls");
-
         coordinates_1 = get_coordinates();
 
         fill_list_of_ships(list_of_ships_1, coordinates_1, ships_number_by_coordinates_1);
+
+        Sleep(2000);
+
+        system("cls");
 
         if (check_board(list_of_ships_1)) {
             break;
@@ -102,11 +109,13 @@ int main() {
         std::cout << player_2_name << ", arrange your ships on the game board by specifying the coordinates of the extreme decks ";
         std::cout << "in the format \"letternumber letternumber\"\n\n";
 
-        // system("cls");
-
         coordinates_2 = get_coordinates();
 
         fill_list_of_ships(list_of_ships_2, coordinates_2, ships_number_by_coordinates_2);
+
+        Sleep(2000);
+
+        system("cls");
 
         if (check_board(list_of_ships_2)) {
             break;
@@ -151,26 +160,55 @@ int main() {
         }
     }
 
-    std::cout << player_2_name << " , step away from the screen\n\n";
-    std::cout << player_1_name << " , your location of the ships:\n\n";
+
+
+    std::cout << player_1_name << ", press enter to see the location of your ships and tell your opponent not to look\n\n";
+
+    std::cin.ignore();
+    std::cin.ignore();
+
+    system("cls");
+
+    std::cout << player_1_name << ", your location of the ships:\n\n";
     draw_boards(attack_board_player_1, board_player_1, true, false);
 
-    // system("cls");
+    std::cout << "Press enter to continue\n";
+    std::cin.ignore();
 
-    std::cout << player_1_name << " , step away from the screen\n\n";
-    std::cout << player_2_name << " , your location of the ships:\n\n";
+    system("cls");
+
+
+
+    std::cout << player_2_name << ", press enter to see the location of your ships and tell your opponent not to look\n\n";
+
+    std::cin.ignore();
+
+    system("cls");
+
+    std::cout << player_2_name << ", your location of the ships:\n\n";
     draw_boards(attack_board_player_2, board_player_2, true, false);
 
-    // system("cls");
+    std::cout << "Press enter to continue\n";
+    std::cin.ignore();
 
-    std::cout << "The fight starts!\n\n";
+    system("cls");
+
+
+
+    std::cout << "Fight starts!\n\n";
+
+    Sleep(2000);
     
-    // system("cls");
+    system("cls");
 
     int decks_count_1 = 20, decks_count_2 = 20;
     int move = 1;
 
     while (true) {
+
+        std::cout << player_1_name << ": " << decks_count_1 << '\n';
+        std::cout << player_2_name << ": " << decks_count_2 << '\n';
+        std::cout << '\n';
 
         if (move == 1) {
             std::cout << player_1_name << " moves\n\n";
@@ -182,17 +220,25 @@ int main() {
             ships_number_by_coordinates_1, board_player_2);
         }
 
-        std::cout << player_1_name << ": " << decks_count_1 << '\n';
-        std::cout << player_2_name << ": " << decks_count_2 << '\n';
-        std::cout << '\n';
+        //std::cout << player_1_name << ": " << decks_count_1 << '\n';
+        //std::cout << player_2_name << ": " << decks_count_2 << '\n';
+        //std::cout << '\n';
 
         if (decks_count_1 == 0) {
+
+            std::cout << player_1_name << ": " << decks_count_1 << '\n';
+            std::cout << player_2_name << ": " << decks_count_2 << '\n';
+            std::cout << '\n';
 
             std::cout << player_2_name << ", you're a winner!!!\n";
             std::cout << player_1_name << ", you're a loser.\n";
             break;
 
         } else if (decks_count_2 == 0) {
+
+            std::cout << player_1_name << ": " << decks_count_1 << '\n';
+            std::cout << player_2_name << ": " << decks_count_2 << '\n';
+            std::cout << '\n';
 
             std::cout << player_1_name << ", you're a winner!!!\n";
             std::cout << player_2_name << ", you,re a loser.\n";
