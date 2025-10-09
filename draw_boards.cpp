@@ -3,21 +3,79 @@
 
 void draw_boards(char ** attack_board, char ** board, bool show_your_board, bool show_opponents_board) {
 
-    if (show_your_board) {
+    std::string letters = "ABCDEFGHIJ";
 
+    if (show_your_board) {
+        
         std::cout << "Your board:\n\n";
 
-        std::cout << "   A B C D E F G H I J \n";
+        std::cout << "   ";
+
+        for (int i = 0; i < 24; ++i) {
+
+            if (i >= 3 && i <= 21 && i % 2 == 1) {
+                std::cout << letters[(i - 1) / 2 - 1];
+            } else {
+                std::cout << ' ';
+            }
+
+        }
+
+        std::cout << "\n";
+
+        for (int i = 0; i < 24; ++i) {
+
+            if (i == 0) {
+                std::cout << "   ┌";
+            } else if (i == 23) {
+                std::cout << "┐";
+            } else {
+                std::cout << "─";
+            }
+
+        }
+
+        std::cout << "\n";
 
         for (int i = 0; i < 10; ++i) {
 
-            std::cout << i + 1 << "  ";
-
-            for (int j = 0; j < 10; ++j) {
-                std::cout << board[i][j] << ' ';
+            if (i != 9) {
+                std::cout << " " << i + 1;
+            } else {
+                std::cout << i + 1;
             }
 
-            std::cout << '\n';
+            std::cout << " │ ";
+
+            for (int j = 0; j < 10; ++j) {
+                if (board[i][j] == '#') {
+                    std::cout << "❎";
+                }
+                if (board[i][j] == '.') {
+                    std::cout << "💥";
+                }
+                if (board[i][j] == 'x') {
+                    std::cout << "❌";
+                }
+                if (board[i][j] == ' ') {
+                    std::cout << "🌊";
+                }
+            }
+
+            std::cout << " │";
+            std::cout << "\n";
+
+        }
+
+        for (int i = 0; i < 24; ++i) {
+
+            if (i == 0) {
+                std::cout << "   └";
+            } else if (i == 23) {
+                std::cout << "┘";
+            } else {
+                std::cout << "─";
+            }
 
         }
 
@@ -29,21 +87,75 @@ void draw_boards(char ** attack_board, char ** board, bool show_your_board, bool
 
         std::cout << "Opponent's board:\n\n";
 
-        std::cout << "   A B C D E F G H I J \n";
+        std::cout << "   ";
+
+        for (int i = 0; i < 24; ++i) {
+
+            if (i >= 3 && i <= 21 && i % 2 == 1) {
+                std::cout << letters[(i - 1) / 2 - 1];
+            } else {
+                std::cout << ' ';
+            }
+
+        }
+
+        std::cout << "\n";
+
+        for (int i = 0; i < 24; ++i) {
+
+            if (i == 0) {
+                std::cout << "   ┌";
+            } else if (i == 23) {
+                std::cout << "┐";
+            } else {
+                std::cout << "─";
+            }
+
+        }
+
+        std::cout << "\n";
 
         for (int i = 0; i < 10; ++i) {
 
-            std::cout << i + 1 << "  ";
-
-            for (int j = 0; j < 10; ++j) {
-                std::cout << attack_board[i][j] << ' ';
+            if (i != 9) {
+                std::cout << " " << i + 1;
+            } else {
+                std::cout << i + 1;
             }
 
-            std::cout << '\n';
+            std::cout << " │ ";
+
+            for (int j = 0; j < 10; ++j) {
+                if (attack_board[i][j] == '.') {
+                    std::cout << "🌊";
+                }
+                if (attack_board[i][j] == 'x') {
+                    std::cout << "❌";
+                }
+                if (attack_board[i][j] == ' ') {
+                    std::cout << "⬛";
+                }
+            }
+
+            std::cout << " │";
+            std::cout << "\n";
+
+        }
+
+        for (int i = 0; i < 24; ++i) {
+
+            if (i == 0) {
+                std::cout << "   └";
+            } else if (i == 23) {
+                std::cout << "┘";
+            } else {
+                std::cout << "─";
+            }
 
         }
 
         std::cout << '\n';
 
     }
+
 }
