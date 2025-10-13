@@ -2,4 +2,4 @@
 
 #pragma once
 
-void make_board(char ** board, std::vector <std::pair <int, int>> coordinates);
+void make_board(char ** board, std::vector <std::pair <int, int>> coordinates, int coordinates_size);

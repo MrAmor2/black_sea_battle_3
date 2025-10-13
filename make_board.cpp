@@ -1,8 +1,8 @@
 #include <vector>
 #include <iostream>
 
-void make_board(char ** board, std::vector <std::pair <int, int>> coordinates) {
-    for (int i = 0; i < 20; i += 2) {
+void make_board(char ** board, std::vector <std::pair <int, int>> coordinates, int coordinates_size) {
+    for (int i = 0; i < coordinates_size; i += 2) {
         std::pair <int, int> pair_1 = coordinates[i], pair_2 = coordinates[i + 1];
 
         if (pair_1.first == pair_2.first) {

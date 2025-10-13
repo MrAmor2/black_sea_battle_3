@@ -100,6 +100,9 @@ int main() {
 
         if (check_board(list_of_ships_1)) {
             break;
+        } else {
+            Sleep(2000);
+            system("cls");
         }
 
     }
@@ -140,8 +143,8 @@ int main() {
         }
     }
 
-    make_board(board_player_1, coordinates_1);
-    make_board(board_player_2, coordinates_2);
+    make_board(board_player_1, coordinates_1, 20);
+    make_board(board_player_2, coordinates_2, 20);
 
     char ** attack_board_player_1 = new char* [10];
     for (size_t i = 0; i < 10; ++i) {
@@ -220,10 +223,6 @@ int main() {
             ships_number_by_coordinates_1, board_player_2);
         }
 
-        //std::cout << player_1_name << ": " << decks_count_1 << '\n';
-        //std::cout << player_2_name << ": " << decks_count_2 << '\n';
-        //std::cout << '\n';
-
         if (decks_count_1 == 0) {
 
             std::cout << player_1_name << ": " << decks_count_1 << '\n';
@@ -248,9 +247,8 @@ int main() {
 
     }
 
-    // system("cls");
-
-
+    Sleep(5000);
+    system("cls");
 
     for (size_t i = 0; i < 10; ++i) {
         delete [] attack_board_player_1[i];
