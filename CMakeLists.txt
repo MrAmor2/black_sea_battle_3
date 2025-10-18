@@ -8,8 +8,8 @@ add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
 add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
 
 add_executable(sea_battle
-    check_board.cpp
-    include/check_board.hpp
+    mini_functions.cpp
+    include/mini_functions.hpp
     draw_boards.cpp
     include/draw_boards.hpp
     fill_list_of_ships.cpp

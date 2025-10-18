@@ -5,8 +5,8 @@
 #include "include\make_board.hpp"
 #include "include\draw_boards.hpp"
 #include "include\fill_list_of_ships.hpp"
-#include "include\check_board.hpp"
 #include "include\make_move.hpp"
+#include "include\mini_functions.hpp"
 
 int main() {
 
@@ -85,46 +85,33 @@ int main() {
         }
     }
 
-    while (true) {
+    
 
-        std::cout << player_1_name << ", arrange your ships on the game board by specifying the coordinates of the extreme decks ";
-        std::cout << "in the format \"letternumber letternumber\"\n\n";
+    std::cout << player_1_name << ", arrange your ships on the game board by specifying the coordinates of the extreme decks ";
+    std::cout << "in the format \"letternumber letternumber\"\n\n";
 
-        coordinates_1 = get_coordinates();
+    coordinates_1 = get_coordinates();
 
-        fill_list_of_ships(list_of_ships_1, coordinates_1, ships_number_by_coordinates_1);
+    fill_list_of_ships(list_of_ships_1, coordinates_1, ships_number_by_coordinates_1);
 
-        Sleep(2000);
+    Sleep(2000);
 
-        system("cls");
+    system("cls");
 
-        if (check_board(list_of_ships_1)) {
-            break;
-        } else {
-            Sleep(2000);
-            system("cls");
-        }
+    
 
-    }
+    std::cout << player_2_name << ", arrange your ships on the game board by specifying the coordinates of the extreme decks ";
+    std::cout << "in the format \"letternumber letternumber\"\n\n";
 
-    while (true) {
+    coordinates_2 = get_coordinates();
 
-        std::cout << player_2_name << ", arrange your ships on the game board by specifying the coordinates of the extreme decks ";
-        std::cout << "in the format \"letternumber letternumber\"\n\n";
+    fill_list_of_ships(list_of_ships_2, coordinates_2, ships_number_by_coordinates_2);
 
-        coordinates_2 = get_coordinates();
+    Sleep(2000);
 
-        fill_list_of_ships(list_of_ships_2, coordinates_2, ships_number_by_coordinates_2);
+    system("cls");
 
-        Sleep(2000);
-
-        system("cls");
-
-        if (check_board(list_of_ships_2)) {
-            break;
-        }
-
-    }
+    
 
     char ** board_player_1 = new char* [10];
     for (size_t i = 0; i < 10; ++i) {
@@ -167,7 +154,6 @@ int main() {
 
     std::cout << player_1_name << ", press enter to see the location of your ships and tell your opponent not to look\n\n";
 
-    std::cin.ignore();
     std::cin.ignore();
 
     system("cls");
@@ -231,6 +217,7 @@ int main() {
 
             std::cout << player_2_name << ", you're a winner!!!\n";
             std::cout << player_1_name << ", you're a loser.\n";
+            
             break;
 
         } else if (decks_count_2 == 0) {

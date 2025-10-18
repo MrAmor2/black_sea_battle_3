@@ -7,13 +7,13 @@ void draw_boards(char ** attack_board, char ** board, bool show_your_board, bool
 
     if (show_your_board && show_opponents_board) {
 
-        std::cout << "Your board: ";
+        std::cout << "Opponents's board: ";
 
-        for (int i = 0; i < 39; ++i) {
+        for (int i = 0; i < 32; ++i) {
             std::cout << " ";
         }
 
-        std::cout << "Opponent's board: ";
+        std::cout << "Your board: ";
 
         std::cout << "\n\n";
 
@@ -100,18 +100,20 @@ void draw_boards(char ** attack_board, char ** board, bool show_your_board, bool
             std::cout << " │ ";
 
             for (int j = 0; j < 10; ++j) {
-                if (board[i][j] == '#') {
+
+               if (attack_board[i][j] == '#') {
                     std::cout << "❎";
                 }
-                if (board[i][j] == '.') {
-                    std::cout << "💥";
-                }
-                if (board[i][j] == 'x') {
-                    std::cout << "❌";
-                }
-                if (board[i][j] == ' ') {
+                if (attack_board[i][j] == '.') {
                     std::cout << "🌊";
                 }
+                if (attack_board[i][j] == 'x') {
+                    std::cout << "❌";
+                }
+                if (attack_board[i][j] == ' ') {
+                    std::cout << "⬛";
+                }
+
             }
 
             std::cout << " │";
@@ -129,18 +131,20 @@ void draw_boards(char ** attack_board, char ** board, bool show_your_board, bool
             std::cout << " │ ";
 
             for (int j = 0; j < 10; ++j) {
-                if (attack_board[i][j] == '#') {
+
+               if (board[i][j] == '#') {
                     std::cout << "❎";
                 }
-                if (attack_board[i][j] == '.') {
-                    std::cout << "🌊";
+                if (board[i][j] == '.') {
+                    std::cout << "💥";
                 }
-                if (attack_board[i][j] == 'x') {
+                if (board[i][j] == 'x') {
                     std::cout << "❌";
                 }
-                if (attack_board[i][j] == ' ') {
-                    std::cout << "⬛";
+                if (board[i][j] == ' ') {
+                    std::cout << "🌊";
                 }
+
             }
 
             std::cout << " │";

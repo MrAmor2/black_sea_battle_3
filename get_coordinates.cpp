@@ -2,9 +2,11 @@
 #include <string>
 #include <vector>
 #include <windows.h>
+#include <conio.h>
 
 #include "include\draw_boards.hpp"
 #include "include\make_board.hpp"
+#include "include\mini_functions.hpp"
 
 int abs(int x) {
     if (x < 0) {
@@ -13,18 +15,11 @@ int abs(int x) {
     return x;
 }
 
-void move_cursor(int x, int y) {  
-    COORD coord;  
-    coord.X = x;  
-    coord.Y = y;  
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);  
-}
-
 std::vector <std::pair <int, int>> get_coordinates() {
 
     std::string upper_letters = "QWERTYUIOPASDFGHJKLZXCVBNM";
 
-    std::string input_coordinates_1, input_coordinates_2;
+    std::string input_coordinates_1 = "", input_coordinates_2 = "";
     std::vector <std::pair <int, int>> coordinates_array(20);
     std::vector <int> x_decks_ships_count(4, 0);
 
@@ -60,9 +55,100 @@ std::vector <std::pair <int, int>> get_coordinates() {
 
         for (size_t i = 0; i < 10; ++i) {
 
+            input_coordinates_1 = "", input_coordinates_2 = "";
+
+            int x = 5, y = 6;
+            move_cursor(x, y);
+
+            int enters_count = 0, button_code;
+            char old_square_icon_1, old_square_icon_2;
+            std::pair <int, int> old_square_1, old_square_2;
+
+            while (true) {
+
+                button_code = _getch();
+
+                if (button_code == 0 || button_code == 224) {
+
+                    button_code = _getch();
+                    
+                    if (button_code == 72) {
+                        if (y > 6) {
+                            y -= 1;
+                        }
+                    } else if (button_code == 80) {
+                        if (y < 15) {
+                            y += 1;
+                        }
+                    } else if (button_code == 75) {
+                        if (x >= 7) {
+                            x -= 2;
+                        }
+                    } else if (button_code == 77) {
+                        if (x <= 21) {
+                            x += 2;
+                        }
+                    }
+
+                    move_cursor(x, y);
+
+                } else {
+
+                    if (button_code == 13) {
+
+                        enters_count += 1;
+
+                        if (enters_count == 1) {
+
+                            input_coordinates_1 += (char) ('a' + (x - 5) / 2);
+
+                            if (y - 6 == 9) {
+                                input_coordinates_1 += "10";
+                            } else {
+                                input_coordinates_1 += (char) ('1' + (y - 6));
+                            }
+
+                            move_cursor(x, y);
+                            std::cout << "⚓";
+                            move_cursor(x, y);
+
+                            old_square_1 = {x, y};
+                            old_square_icon_1 = board[y - 6][(x - 5) / 2];
+
+                        } else if (enters_count == 2) {
+
+                            input_coordinates_2 += (char) ('a' + (x - 5) / 2);
+                            
+                            if (y - 6 == 9) {
+                                input_coordinates_2 += "10";
+                            } else {
+                                input_coordinates_2 += (char) ('1' + (y - 6));
+                            }
+
+                            move_cursor(x, y);
+                            std::cout << "⚓";
+                            move_cursor(x, y);
+
+                            old_square_2 = {x, y};
+                            old_square_icon_2 = board[y - 6][(x - 5) / 2];
+
+                        }
+
+                    }
+
+                }
+
+                if (enters_count == 2) {
+                    break;
+                }
+
+            }
+
             move_cursor(10, i + 18);
 
-            std::cin >> input_coordinates_1 >> input_coordinates_2;
+            std::cout << input_coordinates_1 << ' ' << input_coordinates_2;
+
+            Sleep(2000);
             
             if (upper_letters.find(input_coordinates_1[0]) == std::string::npos) {
 
@@ -108,6 +194,15 @@ std::vector <std::pair <int, int>> get_coordinates() {
 
             shift += 1;
 
+
+
+            move_cursor(old_square_1.first, old_square_1.second);
+            print_unicode(old_square_icon_1);
+
+            move_cursor(old_square_2.first, old_square_2.second);
+            print_unicode(old_square_icon_2);
+            
+
             // Проверка корректности
 
 
@@ -119,9 +214,9 @@ std::vector <std::pair <int, int>> get_coordinates() {
 
             if (deck_1.first != deck_2.first && deck_1.second != deck_2.second) {
                 message = "The ship can only be on one line!";
-            } else if (deck_1.first == deck_2.first && abs(deck_1.second - deck_2.second) >= 5) {
+            } else if (deck_1.first == deck_2.first && abs(deck_1.second - deck_2.second) + 1 >= 5) {
                 message = "The ship cannot be longer than 4!";
-            } else if (deck_1.second == deck_2.second && abs(deck_1.first - deck_2.first) >= 5) {
+            } else if (deck_1.second == deck_2.second && abs(deck_1.first - deck_2.first) + 1 >= 5) {
                 message = "The ship cannot be longer than 4!";
             } else if (deck_1.first < 0 || deck_1.first > 9 || deck_2.first < 0 || deck_2.first > 9) {
                 message = "The ship must be completely within the 10x10 board!";
@@ -196,6 +291,9 @@ std::vector <std::pair <int, int>> get_coordinates() {
 
 
 
+            deck_1 = coordinates_array[shift - 2], \
+            deck_2 = coordinates_array[shift - 1];
+
             int length_of_ship = 0;
 
             if (deck_1.first == deck_2.first) {
@@ -204,7 +302,7 @@ std::vector <std::pair <int, int>> get_coordinates() {
                 length_of_ship = abs(deck_1.first - deck_2.first) + 1;
             }
 
-            if (x_decks_ships_count[length_of_ship - 1] == 5 - length_of_ship) {
+            if (x_decks_ships_count[length_of_ship - 1] >= 5 - length_of_ship) {
 
                 move_cursor(10, i + 18);
                 std::cout << "                                                                                                       ";
@@ -238,9 +336,10 @@ std::vector <std::pair <int, int>> get_coordinates() {
 
         }
 
+        move_cursor(0, 28);
+
         std::cout << '\n';
 
-        std::cout << "Correctly\n\n";
         flag = true;
 
     }
