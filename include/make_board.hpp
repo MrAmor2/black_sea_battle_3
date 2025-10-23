@@ -1,5 +1,3 @@
-#include <vector>
-
 #pragma once
 
-void make_board(char ** board, std::vector <std::pair <int, int>> coordinates, int coordinates_size);
+void make_board(char ** board, std::pair <int, int> (&coordinates_array)[], int coordinates_size);

@@ -8,14 +8,14 @@
 #include "include\mini_functions.hpp"
 
 void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, int &decks_count, \
-    int &move, char ** opponent_board, char ** attack_board, int ** ships_number_by_coordinates, char ** board_player_move) {
+    int &number_of_moving_player, char ** opponent_board, char ** attack_board, int ** ships_number_by_coordinates, char ** board_player_move) {
 
         std::string coordinates = "";
-        int x = 32, y = 5;
+        int x = 28, y = 5;
 
-        std::cout << "Do you want to see your board? [y / n]";
+        std::cout << "Хочешь увидеть свою доску? [✔ / ✖]";
 
-        move_cursor(32, 5);
+        move_cursor(28, 5);
 
         int button_code;
         char answer;
@@ -32,11 +32,11 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
                 button_code = _getch();
                 
                 if (button_code == 75) {
-                    if (x == 36) {
+                    if (x == 32) {
                         x -= 4;
                     }
                 } else if (button_code == 77) {
-                    if (x == 32) {
+                    if (x == 28) {
                         x += 4;
                     }
                 }
@@ -47,9 +47,9 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
                 
                 if (button_code == 13) {
 
-                    if (x == 36) {
+                    if (x == 32) {
                         answer = 'n';
-                    } else if (x == 32) {
+                    } else if (x == 28) {
                         answer = 'y';
                     }
 
@@ -61,9 +61,7 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
 
         }
 
-        Sleep(2000);
-
-        system("cls");
+        move_cursor(0, 7);
 
         if (answer == 'y') {
             draw_boards(attack_board, board_player_move, true, true);
@@ -71,13 +69,13 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
             draw_boards(attack_board, board_player_move, false, true);
         }
 
-        std::cout << "Your move: ";
+        std::cout << "Твой ход: ";
 
         while (true) {
 
             coordinates = "";
 
-            x = 5, y = 4;
+            x = 5, y = 11;
 
             move_cursor(x, y);
 
@@ -90,11 +88,11 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
                     button_code = _getch();
                     
                     if (button_code == 72) {
-                        if (y > 4) {
+                        if (y > 11) {
                             y -= 1;
                         }
                     } else if (button_code == 80) {
-                        if (y < 13) {
+                        if (y < 20) {
                             y += 1;
                         }
                     } else if (button_code == 75) {
@@ -113,12 +111,12 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
 
                     if (button_code == 13) {
 
-                        coordinates += (char) ('a' + (x - 5) / 2);
+                        coordinates += (char) ('A' + (x - 5) / 2);
 
-                        if (y - 6 == 7) {
+                        if (y - 6 == 14) {
                             coordinates += "10";
                         } else {
-                            coordinates += (char) ('1' + (y - 4));
+                            coordinates += (char) ('1' + (y - 11));
                         }
 
                         move_cursor(x, y);
@@ -126,7 +124,7 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
                         move_cursor(x, y);
 
                         old_square = {x, y};
-                        old_square_icon = attack_board[y - 4][(x - 5) / 2];
+                        old_square_icon = attack_board[y - 11][(x - 5) / 2];
 
                         break;
 
@@ -136,7 +134,7 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
 
             }
 
-            move_cursor(11, 16);
+            move_cursor(10, 23);
 
             std::cout << coordinates;
 
@@ -145,12 +143,12 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
             if (coordinates.size() == 3) {
 
                 y = 9;
-                x = (int) coordinates[0] - 'a';
+                x = (int) coordinates[0] - 'A';
 
             } else if (coordinates.size() == 2) {
 
                 y = coordinates[1] - '1';
-                x = (int) coordinates[0] - 'a';
+                x = (int) coordinates[0] - 'A';
 
             }
 
@@ -163,14 +161,14 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
                 move_cursor(old_square.first, old_square.second);
                 print_unicode(old_square_icon);
 
-                move_cursor(11, 16);
+                move_cursor(10, 23);
                 std::cout << "                                                          ";
 
-                move_cursor(11, 16);
-                std::cout << "There can't be a ship here, or it's already been attacked!";
+                move_cursor(10, 23);
+                std::cout << "Здесь не может быть корабля, или эта клетка уже атакована!";
                 Sleep(2000);
 
-                move_cursor(11, 16);
+                move_cursor(10, 23);
                 std::cout << "                                                          ";
 
             }
@@ -179,15 +177,15 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
 
 
 
-        move_cursor(0, 18);
+        move_cursor(0, 25);
 
         if (opponent_board[y][x] == ' ') {
 
-            std::cout << "Miss!\n\n";
+            std::cout << "Мимо!\n\n";
 
             opponent_board[y][x] = '.';
             attack_board[y][x] = '.';
-            move = 3 - move;
+            number_of_moving_player = 3 - number_of_moving_player;
 
         } else if (opponent_board[y][x] == '#') {
 
@@ -210,7 +208,7 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
 
             if (count_destroyed_decks == list_of_ships[num_of_ship].size()) {
 
-                std::cout << "Sunk!\n\n";
+                std::cout << "Потопил(-а)!\n\n";
 
                 for (int i = 0; i < list_of_ships[num_of_ship].size(); ++i) {
 
@@ -237,21 +235,19 @@ void make_move(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, 
 
             } else {
 
-                std::cout << "Hit!\n\n";
+                std::cout << "Ранил(-а)!\n\n";
 
             }
 
         }
 
-        move_cursor(0, 0);
+        move_cursor(0, 7);
 
         draw_boards(attack_board, board_player_move, false, true);
 
-        move_cursor(0, 20);
+        move_cursor(0, 27);
 
-        std::cout << "Press enter to continue\n\n";
-
-        // std::cin.ignore();
+        std::cout << "Нажми enter, чтобы продолжить\n\n";
 
         while (true) {
 

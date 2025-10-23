@@ -7,13 +7,13 @@ void draw_boards(char ** attack_board, char ** board, bool show_your_board, bool
 
     if (show_your_board && show_opponents_board) {
 
-        std::cout << "Opponents's board: ";
+        std::cout << "Поле соперника: ";
 
         for (int i = 0; i < 32; ++i) {
             std::cout << " ";
         }
 
-        std::cout << "Your board: ";
+        std::cout << "Твое поле: ";
 
         std::cout << "\n\n";
 
@@ -191,7 +191,7 @@ void draw_boards(char ** attack_board, char ** board, bool show_your_board, bool
 
     else if (show_your_board) {
         
-        std::cout << "Your board:\n\n";
+        std::cout << "Твое поле:\n\n";
 
         std::cout << "   ";
 
@@ -269,7 +269,7 @@ void draw_boards(char ** attack_board, char ** board, bool show_your_board, bool
 
     else if (show_opponents_board) {
 
-        std::cout << "Opponent's board:\n\n";
+        std::cout << "Поле соперника:\n\n";
 
         std::cout << "   ";
 

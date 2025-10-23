@@ -21,4 +21,6 @@ add_executable(sea_battle
     include/make_board.hpp
     make_move.cpp
     include/make_move.hpp
+    print_rules.cpp
+    include/print_rules.hpp
 )

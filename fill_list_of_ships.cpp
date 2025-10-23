@@ -1,11 +1,11 @@
 #include <vector>
 
 void fill_list_of_ships(std::vector <std::vector <std::pair <int, int>>> &list_of_ships, \
-    std::vector <std::pair <int, int>> coordinates, int ** ships_number_by_coordinates) {
+    std::pair <int, int> (&coordinates_array)[], int ** ships_number_by_coordinates) {
 
         for (int i = 0; i < 20; i += 2) {
 
-            std::pair <int, int> pair_1 = coordinates[i], pair_2 = coordinates[i + 1];
+            std::pair <int, int> pair_1 = coordinates_array[i], pair_2 = coordinates_array[i + 1];
 
             if (pair_1.first == pair_2.first) {
 

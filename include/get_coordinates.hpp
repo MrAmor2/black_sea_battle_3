@@ -1,5 +1,3 @@
-#include <vector>
-
 #pragma once
 
-std::vector <std::pair <int, int>> get_coordinates();
+void get_coordinates(std::pair <int, int> (&coordinates_array)[]);
