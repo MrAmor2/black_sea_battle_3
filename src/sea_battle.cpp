@@ -4,6 +4,7 @@
 #include <conio.h>
 #include <utility>
 #include <time.h>
+#include <new>
 
 #include "..\include\get_coordinates.hpp"
 #include "..\include\make_board.hpp"
@@ -73,55 +74,105 @@ int main() {
 
 
 
-    std::pair <int, int>* coordinates_array_1 = new std::pair <int, int> [20];
-    std::pair <int, int>* coordinates_array_2 = new std::pair <int, int> [20];
+
 
     std::vector <std::vector <std::pair <int, int>>> list_of_ships_1(10);
     std::vector <std::vector <std::pair <int, int>>> list_of_ships_2(10);
 
-    int ** ships_number_by_coordinates_1 = new int* [10];
-    int ** ships_number_by_coordinates_2 = new int* [10];
+    std::pair <int, int>* coordinates_array_1 = nullptr;
+    std::pair <int, int>* coordinates_array_2 = nullptr;
 
-    for (size_t i = 0; i < 10; ++i) {
-        ships_number_by_coordinates_1[i] = new int [10];
-        ships_number_by_coordinates_2[i] = new int [10];
-    }
+    int ** ships_number_by_coordinates_1 = nullptr;
+    int ** ships_number_by_coordinates_2 = nullptr;
 
-    for (size_t i = 0; i < 10; ++i) {
-        for (size_t j = 0; j < 10; ++j) {
-            ships_number_by_coordinates_1[i][j] = -1;
-            ships_number_by_coordinates_2[i][j] = -1;
+    char ** board_player_1 = nullptr;
+    char ** board_player_2 = nullptr;
+
+    char ** attack_board_player_1 = nullptr;
+    char ** attack_board_player_2 = nullptr;
+
+    try {
+
+        coordinates_array_1 = new std::pair <int, int> [20];
+        coordinates_array_2 = new std::pair <int, int> [20];
+
+        ships_number_by_coordinates_1 = new int* [10];
+        ships_number_by_coordinates_2 = new int* [10];
+
+        for (size_t i = 0; i < 10; ++i) {
+            ships_number_by_coordinates_1[i] = new int [10];
+            ships_number_by_coordinates_2[i] = new int [10];
         }
-    }
 
-    char ** board_player_1 = new char* [10];
-    char ** board_player_2 = new char* [10];
-
-    for (size_t i = 0; i < 10; ++i) {
-        board_player_1[i] = new char [10];
-        board_player_2[i] = new char [10];
-    }
-
-    for (size_t i = 0; i < 10; ++i) {
-        for (size_t j = 0; j < 10; ++j) {
-            board_player_1[i][j] = ' ';
-            board_player_2[i][j] = ' ';
+        for (size_t i = 0; i < 10; ++i) {
+            for (size_t j = 0; j < 10; ++j) {
+                ships_number_by_coordinates_1[i][j] = -1;
+                ships_number_by_coordinates_2[i][j] = -1;
+            }
         }
-    }
 
-    char ** attack_board_player_1 = new char* [10];
-    char ** attack_board_player_2 = new char* [10];
+        board_player_1 = new char* [10];
+        board_player_2 = new char* [10];
 
-    for (size_t i = 0; i < 10; ++i) {
-        attack_board_player_1[i] = new char [10];
-        attack_board_player_2[i] = new char [10];
-    }
-
-    for (size_t i = 0; i < 10; ++i) {
-        for (size_t j = 0; j < 10; ++j) {
-            attack_board_player_1[i][j] = ' ';
-            attack_board_player_2[i][j] = ' ';
+        for (size_t i = 0; i < 10; ++i) {
+            board_player_1[i] = new char [10];
+            board_player_2[i] = new char [10];
         }
+
+        for (size_t i = 0; i < 10; ++i) {
+            for (size_t j = 0; j < 10; ++j) {
+                board_player_1[i][j] = ' ';
+                board_player_2[i][j] = ' ';
+            }
+        }
+
+        attack_board_player_1 = new char* [10];
+        attack_board_player_2 = new char* [10];
+
+        for (size_t i = 0; i < 10; ++i) {
+            attack_board_player_1[i] = new char [10];
+            attack_board_player_2[i] = new char [10];
+        }
+
+        for (size_t i = 0; i < 10; ++i) {
+            for (size_t j = 0; j < 10; ++j) {
+                attack_board_player_1[i][j] = ' ';
+                attack_board_player_2[i][j] = ' ';
+            }
+        }
+
+    } catch (const std::bad_alloc& e) {
+
+        std::cerr << "Ошибка выделения памяти: " << e.what() << std::endl;
+
+        delete [] coordinates_array_1;
+        delete [] coordinates_array_2;
+
+        for (size_t i = 0; i < 10; ++i) {
+            delete [] attack_board_player_1[i];
+            delete [] attack_board_player_2[i];
+        }
+
+        delete [] attack_board_player_1;
+        delete [] attack_board_player_2;
+
+        for (size_t i = 0; i < 10; ++i) {
+            delete [] board_player_1[i];
+            delete [] board_player_2[i];
+        }
+
+        delete [] board_player_1;
+        delete [] board_player_2;
+
+        for (size_t i = 0; i < 10; ++i) {
+            delete [] ships_number_by_coordinates_1[i];
+            delete [] ships_number_by_coordinates_2[i];
+        }
+
+        delete [] ships_number_by_coordinates_1;
+        delete [] ships_number_by_coordinates_2;
+
+        return 1;
     }
 
     
