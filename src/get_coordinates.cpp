@@ -3,9 +3,9 @@
 #include <windows.h>
 #include <conio.h>
 
-#include "include\draw_boards.hpp"
-#include "include\make_board.hpp"
-#include "include\mini_functions.hpp"
+#include "..\include\draw_boards.hpp"
+#include "..\include\make_board.hpp"
+#include "..\include\mini_functions.hpp"
 
 int abs(int x) {
     if (x < 0) {
@@ -14,8 +14,9 @@ int abs(int x) {
     return x;
 }
 
-void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
+void get_coordinates(std::pair <int, int> * coordinates_array) {
 
+    std::string empty_line = "                                                                                                     ";
     std::string input_coordinates_1 = "", input_coordinates_2 = "";
     int x_decks_ships_count[4] {};
 
@@ -44,12 +45,12 @@ void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
 
 
 
-    int shift = 0;
+    int input_deck_index = 0;
 
-    for (size_t i = 0; i < 10; ++i) {
+    for (size_t ship_number = 0; ship_number < 10; ++ship_number) {
 
-        move_cursor(13, i + 19);
-        std::cout << "                                                                                                       ";
+        move_cursor(13, ship_number + 19);
+        std::cout << empty_line;
 
         input_coordinates_1 = "", input_coordinates_2 = "";
 
@@ -131,24 +132,26 @@ void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
 
                     }
 
-                } else if (button_code == 90 || button_code == 122 && i >= 1) {
+                } else if (button_code == 90 || button_code == 122 && ship_number >= 1) {
 
                     back = true;
 
-                    shift -= 2;
-                    i -= 2;
+                    input_deck_index -= 2;
+                    ship_number -= 2;
 
-                    int len = abs(coordinates_array[shift].first - coordinates_array[shift + 1].first) + \
-                    abs(coordinates_array[shift].second - coordinates_array[shift + 1].second) + 1;
-                    x_decks_ships_count[len - 1] -= 1;
+                    int last_ship_length = abs(coordinates_array[input_deck_index].first - \
+                    coordinates_array[input_deck_index + 1].first) + \
+                    abs(coordinates_array[input_deck_index].second - coordinates_array[input_deck_index + 1].second) + 1;
 
-                    for (int board_i = 0; board_i < 10; ++board_i) {
-                        for (int board_j = 0; board_j < 10; ++board_j) {
+                    x_decks_ships_count[last_ship_length - 1] -= 1;
+
+                    for (size_t board_i = 0; board_i < 10; ++board_i) {
+                        for (size_t board_j = 0; board_j < 10; ++board_j) {
                             home_board[board_i][board_j] = ' ';
                         }
                     }
 
-                    make_board(home_board, coordinates_array, shift);
+                    make_board(home_board, coordinates_array, input_deck_index);
 
                     move_cursor(0, 3);
 
@@ -170,27 +173,27 @@ void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
             continue;
         }
 
-        move_cursor(13, i + 19);
+        move_cursor(13, ship_number + 19);
 
         std::cout << input_coordinates_1 << ' ' << input_coordinates_2;
 
         if (input_coordinates_1.size() == 3) {
-            coordinates_array[shift] = {10 - 1, (int) input_coordinates_1[0] - 'A'};
+            coordinates_array[input_deck_index] = {10 - 1, (int) input_coordinates_1[0] - 'A'};
         } else {
-            coordinates_array[shift] = {input_coordinates_1[1] - '1', \
+            coordinates_array[input_deck_index] = {input_coordinates_1[1] - '1', \
                 (int) input_coordinates_1[0] - 'A'};
         }
 
-        shift++;
+        input_deck_index++;
 
         if (input_coordinates_2.size() == 3) {
-            coordinates_array[shift] = {10 - 1, (int) input_coordinates_2[0] - 'A'};
+            coordinates_array[input_deck_index] = {10 - 1, (int) input_coordinates_2[0] - 'A'};
         } else {
-            coordinates_array[shift] = {input_coordinates_2[1] - '1', \
+            coordinates_array[input_deck_index] = {input_coordinates_2[1] - '1', \
                 (int) input_coordinates_2[0] - 'A'};
         }
 
-        shift++;
+        input_deck_index++;
 
 
 
@@ -202,12 +205,10 @@ void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
 
 
 
-        // Проверка корректности
 
 
-
-        std::pair <int, int> deck_1 = coordinates_array[shift - 2], \
-        deck_2 = coordinates_array[shift - 1];
+        std::pair <int, int> deck_1 = coordinates_array[input_deck_index - 2], \
+        deck_2 = coordinates_array[input_deck_index - 1];
 
         std::string message = "";
 
@@ -221,19 +222,19 @@ void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
 
         if (message != "") {
 
-            move_cursor(13, i + 19);
-            std::cout << "                                                                                                       ";
+            move_cursor(13, ship_number + 19);
+            std::cout << empty_line;
 
-            move_cursor(13, i + 19);
+            move_cursor(13, ship_number + 19);
             std::cout << message;
             Sleep(2000);
 
-            move_cursor(13, i + 19);
-            std::cout << "                                                                                                       ";
+            move_cursor(13, ship_number + 19);
+            std::cout << empty_line;
 
-            move_cursor(13, i + 19);
-            i -= 1;
-            shift -= 2;
+            move_cursor(13, ship_number + 19);
+            ship_number -= 1;
+            input_deck_index -= 2;
 
             continue;
 
@@ -243,7 +244,7 @@ void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
 
         bool check_bump = true;
 
-        for (int deck_1_index = 1; deck_1_index < shift; ++deck_1_index) {
+        for (int deck_1_index = 1; deck_1_index < input_deck_index; ++deck_1_index) {
             for (int deck_2_index = 0; deck_2_index < deck_1_index; ++deck_2_index) {
 
                 if (deck_1_index - deck_2_index != 1 || deck_2_index % 2 != 0) {
@@ -252,20 +253,20 @@ void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
 
                     if (abs(deck_1.first - deck_2.first) <= 1 && abs(deck_1.second - deck_2.second) <= 1) {
 
-                        move_cursor(13, i + 19);
-                        std::cout << "                                                                                           ";
+                        move_cursor(13, ship_number + 19);
+                        std::cout << empty_line;
 
-                        move_cursor(13, i + 19);
+                        move_cursor(13, ship_number + 19);
                         std::cout << "Два корабля сталкиваются!";
                         check_bump = false;
                         Sleep(2000);
 
-                        move_cursor(13, i + 19);
-                        std::cout << "                                                                                           ";
+                        move_cursor(13, ship_number + 19);
+                        std::cout << empty_line;
 
-                        move_cursor(13, i + 19);
-                        i -= 1;
-                        shift -= 2;
+                        move_cursor(13, ship_number + 19);
+                        ship_number -= 1;
+                        input_deck_index -= 2;
                         break;
 
                     }
@@ -286,8 +287,8 @@ void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
 
 
 
-        deck_1 = coordinates_array[shift - 2], \
-        deck_2 = coordinates_array[shift - 1];
+        deck_1 = coordinates_array[input_deck_index - 2], \
+        deck_2 = coordinates_array[input_deck_index - 1];
 
         int length_of_ship = 0;
 
@@ -299,19 +300,19 @@ void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
 
         if (x_decks_ships_count[length_of_ship - 1] >= 5 - length_of_ship) {
 
-            move_cursor(13, i + 19);
-            std::cout << "                                                                                                       ";
+            move_cursor(13, ship_number + 19);
+            std::cout << empty_line;
 
-            move_cursor(13, i + 19);
+            move_cursor(13, ship_number + 19);
             std::cout << "Количество " << length_of_ship << "-палубных кораблей уже " << 5 - length_of_ship << "!";
             Sleep(2000);
 
-            move_cursor(13, i + 19);
-            std::cout << "                                                                                                       ";
+            move_cursor(13, ship_number + 19);
+            std::cout << empty_line;
 
-            move_cursor(13, i + 19);
-            i -= 1;
-            shift -= 2;
+            move_cursor(13, ship_number + 19);
+            ship_number -= 1;
+            input_deck_index -= 2;
 
             continue;
 
@@ -323,17 +324,61 @@ void get_coordinates(std::pair <int, int> (&coordinates_array)[]) {
 
 
 
-        make_board(home_board, coordinates_array, shift);
+        make_board(home_board, coordinates_array, input_deck_index);
 
         move_cursor(0, 3);
 
         draw_boards(home_board, home_board, true, false);
 
+        if (ship_number == 9) {
+
+            move_cursor(0, 30);
+            std::cout << "Нажмите enter, чтобы завершить расстановку, или Z, чтобы вернуться к вводу\n\n";
+
+            while (true) {
+
+                button_code = _getch();
+
+                if (button_code == 13) {
+
+                    std::cout << "Расстановка завершена.";
+                    break;
+
+                } else if (button_code == button_code == 90 || button_code == 122) {
+
+                    input_deck_index -= 2;
+                    ship_number -= 1;
+
+                    int last_ship_length = abs(coordinates_array[input_deck_index].first - \
+                    coordinates_array[input_deck_index + 1].first) + \
+                    abs(coordinates_array[input_deck_index].second - coordinates_array[input_deck_index + 1].second) + 1;
+                    
+                    x_decks_ships_count[last_ship_length - 1] -= 1;
+
+                    for (int board_i = 0; board_i < 10; ++board_i) {
+                        for (int board_j = 0; board_j < 10; ++board_j) {
+                            home_board[board_i][board_j] = ' ';
+                        }
+                    }
+
+                    move_cursor(0, 30);
+
+                    std::cout << empty_line;
+
+                    make_board(home_board, coordinates_array, input_deck_index);
+
+                    move_cursor(0, 3);
+
+                    draw_boards(home_board, home_board, true, false);
+
+                    break;
+
+                }
+
+            }
+        }
+
     }
-
-    move_cursor(0, 29);
-
-    std::cout << '\n';
 
     for (size_t i = 0; i < 10; ++i) {
         delete [] home_board[i];
